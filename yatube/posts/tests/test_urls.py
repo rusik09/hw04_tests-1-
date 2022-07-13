@@ -59,11 +59,7 @@ class StaticURLTests(TestCase):
         self.assertEqual(response.status_code, 404)
 
     def test_urls_uses_correct_template(self):
-<<<<<<< HEAD
         template_url_names = {
-=======
-        template_urls = {
->>>>>>> 341b12717548d0edb4e7134a84f119b9b6e5f05f
             '': '/',
             'group/<slug:slug>/': '/group/<slug:slug>/',
             'profile/<str:username>/': '/profile/<str:username>/',
@@ -71,11 +67,7 @@ class StaticURLTests(TestCase):
             'create/': '/create/',
             'posts/<int:post_id>/edit/': '/posts/<int:post_id>/edit/',
         }
-<<<<<<< HEAD
         for template, address in template_url_names.items():
-=======
-        for template, address in template_urls.items():
->>>>>>> 341b12717548d0edb4e7134a84f119b9b6e5f05f
             with self.subTest(address=address):
                 respone = self.authorised_client.get(address)
                 self.assertTemplateUsed(respone, template)
