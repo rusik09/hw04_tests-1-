@@ -28,6 +28,7 @@ class FormsTest(TestCase):
         self.authorised_client.force_login(FormsTest.user)
 
     def test_form_is_valid(self):
+        """Валидная форма создает запись в базе данных"""
         posts_count = Post.objects.count()
         form_data = {
             'text': 'Тестовый текст',
@@ -44,7 +45,7 @@ class FormsTest(TestCase):
             response,
             reverse('posts:profile', kwargs={'username': self.user.username},)
         )
-        self.assertEqual(Post.objects.count(), posts_count+1)
+        self.assertEqual(Post.objects.count(), posts_count + 1)
         self.assertTrue(
             Post.objects.filter(
                 text='Тестовый текст',
@@ -53,6 +54,7 @@ class FormsTest(TestCase):
         )
 
     def test_post_is_editing(self):
+        """Валидная форма производит изменение поста с post_id в базе данных."""
         posts_count = Post.objects.count()
         form_data = {
             'text': 'Тестовый текст',

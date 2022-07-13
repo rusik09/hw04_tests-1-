@@ -30,6 +30,7 @@ class StaticURLTests(TestCase):
         self.authorised_client.force_login(self.user)
 
     def test_guest_client_status_code(self):
+        """Проверка доступности страниц для анонимного пользователя"""
         urls = (
             '/',
             '/profile/<str:username>/',
@@ -42,23 +43,28 @@ class StaticURLTests(TestCase):
                 self.assertEqual(response.status_code, 200)
 
     def test_post_create(self):
+        """Создание поста доступно авторизованному пользователю"""
         response = self.authorised_client.get('/create/')
         self.assertEqual(response.status_code, 200)
 
     def test_post_create_redirect_anonymous(self):
+        """Страница создания поста перенаправляет анонимного пользователя"""
         response = self.guest_client.get('/create/')
         self.assertEqual(response.status_code, 302)
 
     def test_post_edit(self):
+        """Редактирование поста доступно автору"""
         url = f'/posts/{self.post.id}/edit/'
         response = self.authorised_client.get(url)
         self.assertEqual(response.status_code, 200)
 
     def test_unexisting_page(self):
+        """Проверка несуществующей страницы"""
         response = self.authorised_client.get('/pppppagge/')
         self.assertEqual(response.status_code, 404)
 
     def test_urls_uses_correct_template(self):
+        """URL-адрес использует соответствующий шаблон"""
         template_url_names = {
             '': '/',
             'group/<slug:slug>/': '/group/<slug:slug>/',
