@@ -54,7 +54,7 @@ class FormsTest(TestCase):
         )
 
     def test_post_is_editing(self):
-        """Валидная форма производит изменение поста с post_id в базе данных."""
+        """Валидная форма производит изменение поста в базе данных."""
         posts_count = Post.objects.count()
         form_data = {
             'text': 'Тестовый текст',
