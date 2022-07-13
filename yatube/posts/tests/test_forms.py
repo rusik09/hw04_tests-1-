@@ -80,4 +80,3 @@ class FormsTest(TestCase):
             first_post.group.title,
             'Тестовая группа'
         )
-        
