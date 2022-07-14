@@ -12,7 +12,7 @@ class StaticURLTests(TestCase):
         cls.user = User.objects.create(username='auth')
         cls.group = Group.objects.create(
             title='Тестовая группа',
-            slug='Тестовый слаг',
+            slug='test_slug',
             description='Тестовое описание',
         )
         cls.post = Post.objects.create(
@@ -32,9 +32,8 @@ class StaticURLTests(TestCase):
         """Проверка доступности страниц для анонимного пользователя"""
         urls = (
             '/',
-            '/profile/<str:username>/',
-            '/posts/<int:post_id>/',
-            '/create/',
+            '/profile/auth/',
+            '/posts/1/',
         )
         for url in urls:
             with self.subTest():
@@ -65,14 +64,14 @@ class StaticURLTests(TestCase):
     def test_urls_uses_correct_template(self):
         """URL-адрес использует соответствующий шаблон"""
         template_url_names = {
-            '': '/',
-            'group/<slug:slug>/': '/group/<slug:slug>/',
-            'profile/<str:username>/': '/profile/<str:username>/',
-            'posts/<int:post_id>/': '/posts/<int:post_id>/',
-            'create/': '/create/',
-            'posts/<int:post_id>/edit/': '/posts/<int:post_id>/edit/',
+            '': 'posts/index.html',
+            '/group/test_slug/': 'posts/group_list.html',
+            '/profile/auth/': 'posts/profile.html',
+            '/posts/1/': 'posts/post_detail.html',
+            '/create/': 'posts/create_post.html',
+            '/posts/1/edit/': 'posts/create_post.html',
         }
-        for template, address in template_url_names.items():
+        for address, template in template_url_names.items():
             with self.subTest(address=address):
                 respone = self.authorised_client.get(address)
                 self.assertTemplateUsed(respone, template)

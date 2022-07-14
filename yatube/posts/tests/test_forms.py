@@ -13,7 +13,7 @@ class FormsTest(TestCase):
         cls.user = User.objects.create(username='auth')
         cls.group = Group.objects.create(
             title='Тестовая группа',
-            slug='Тестовый слаг',
+            slug='test_slug',
             description='Тестовое описание',
         )
         cls.post = Post.objects.create(
@@ -24,14 +24,14 @@ class FormsTest(TestCase):
 
     def setUp(self):
         self.authorised_client = Client()
-        self.authorised_client.force_login(FormsTest.user)
+        self.authorised_client.force_login(self.user)
 
     def test_form_is_valid(self):
         """Валидная форма создает запись в базе данных"""
         posts_count = Post.objects.count()
         form_data = {
             'text': 'Тестовый текст',
-            'group': 'Тестовая группа',
+            'group': self.group.id,
         }
 
         response = self.authorised_client.post(
@@ -42,7 +42,8 @@ class FormsTest(TestCase):
 
         self.assertRedirects(
             response,
-            reverse('posts:profile', kwargs={'username': self.user.username},)
+            reverse('posts:profile',
+                    kwargs={'username': self.user.username},)
         )
         self.assertEqual(Post.objects.count(), posts_count + 1)
         self.assertTrue(
@@ -57,7 +58,7 @@ class FormsTest(TestCase):
         posts_count = Post.objects.count()
         form_data = {
             'text': 'Тестовый текст',
-            'group': 'Тестовая группа',
+            'group': self.group.id,
         }
 
         response = self.authorised_client.post(
