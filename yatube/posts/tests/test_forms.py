@@ -84,11 +84,11 @@ class FormsTest(TestCase):
             'text': 'Тестовый текст'
         }
         response = self.guest_client.post(
-            reverse('posts:post_edit'),
+            reverse('posts:post_create'),
             data=form_data,
             follow=True
         )
-        post_create_url = reverse('posts:post_edit')
+        post_create_url = reverse('posts:post_create')
         login_url = reverse('users:login')
         self.assertRedirects(response, f'{login_url}?next={post_create_url}')
         self.assertEqual(Post.objects.count(), posts_count)
