@@ -55,18 +55,17 @@ def post_detail(request, post_id):
 
 @login_required
 def post_create(request):
-    form = PostForm()
     groups = Group.objects.all()
+    form = PostForm(request.POST or None)
     context = {
         'groups': groups,
         'form': form,
     }
-    form = PostForm(request.POST or None)
     if form.is_valid():
         post = form.save(commit=False)
         post.author = request.user
         post.save()
-        return redirect('posts:profile', post.author)
+        return redirect('posts:profile', username=request.user)
     return render(request, 'posts/create_post.html', context)
 
 
